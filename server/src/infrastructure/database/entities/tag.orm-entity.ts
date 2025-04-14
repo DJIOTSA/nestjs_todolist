@@ -1,13 +1,11 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
-  ManyToOne,
+  Entity,
   ManyToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
-import { UserOrmEntity } from './user.orm-entity';
 import { TaskOrmEntity } from './task.orm-entity';
 
 @Entity('tags')

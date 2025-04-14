@@ -1,36 +1,19 @@
-version: '3.8'
+version: '3.8' 
 
 services:
-  app:
-    container_name: task-manager-app
-    build:
-      context: .
-      dockerfile: Dockerfile
-    environment:
-      - NODE_ENV=production
-      - PORT=3000
-      - DB_HOST=db
-      - DB_PORT=5432
-      - DB_USERNAME=${DB_USERNAME}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_DATABASE=${DB_DATABASE}
-    ports:
-      - '3000:3000'
-    depends_on:
-      - db
-    command: node dist/main.js
-
   db:
-    container_name: task-manager-db
-    image: postgres:15-alpine
+    image: postgres:15 
+    container_name: nestjs_postgres_dev 
+    restart: unless-stopped 
     environment:
-      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_USER: ${DB_USERNAME} 
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_DATABASE}
     ports:
-      - '5433:5432'
+      - "${DB_PORT}:5432" 
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data # Persist data in a named volume
 
 volumes:
   postgres_data:
+    driver: local

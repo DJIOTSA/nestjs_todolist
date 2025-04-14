@@ -1,16 +1,15 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
-  ManyToOne,
-  ManyToMany,
+  Entity,
   JoinTable,
+  ManyToMany,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
-import { UserOrmEntity } from './user.orm-entity';
-import { TodoListOrmEntity } from './todo-list.orm-entity';
 import { TagOrmEntity } from './tag.orm-entity';
+import { TodoListOrmEntity } from './todo-list.orm-entity';
 
 export enum TaskStatus {
   OPEN = 'open',

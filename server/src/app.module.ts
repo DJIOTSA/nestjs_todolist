@@ -3,12 +3,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 // Import your TypeORM entities here later when they are created
-import { UserOrmEntity } from './infrastructure/database/entities/user.orm-entity';
-import { TaskOrmEntity } from './infrastructure/database/entities/task.orm-entity';
-import { TagOrmEntity } from './infrastructure/database/entities/tag.orm-entity';
-import { TokenOrmEntity } from './infrastructure/database/entities/token.orm-entity';
-import { TodoListOrmEntity } from './infrastructure/database/entities/todo-list.orm-entity';
 import { ConfigModule, ConfigService } from '@nestjs/config'; // We'll use ConfigModule for env vars
+// import { AcceptLanguageResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -26,16 +22,31 @@ import { ConfigModule, ConfigService } from '@nestjs/config'; // We'll use Confi
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_DATABASE'),
         entities: [__dirname + '/../**/*.orm-entity{.ts,.js}'], // Auto-detect ORM entities
-        synchronize: false, // NEVER use TRUE in production! Use migrations.
-        autoLoadEntities: true, // Recommended alternative to specifying entities array
-        logging: configService.get<string>('NODE_ENV') === 'development', // Log SQL in dev
+        synchronize: true,
+        autoLoadEntities: true,
+        logging: configService.get<string>('NODE_ENV') === 'development',
         migrations: [
           __dirname + '/infrastructure/database/migrations/*{.ts,.js}',
         ],
-        migrationsRun: true, // Automatically run migrations on startup
+        migrationsRun: true,
       }),
     }),
-    // Add other modules here as you build them
+    // I18nModule.forRootAsync({
+    //   imports: [ConfigModule],
+    //   inject: [ConfigService],
+    //   useFactory: (configService: ConfigService) => ({
+    //     fallbackLanguage: 'en',
+    //     loaderOptions: {
+    //       path: path.join(__dirname, '/infrastructure/i18n/'),
+    //       watch: configService.get('NODE_ENV') === 'development',
+    //     },
+    //     resolvers: [
+    //       { use: QueryResolver, options: ['lang', 'locale', 'l'] }, // ?lang=en
+    //       AcceptLanguageResolver,
+    //       // new HeaderResolver(['x-custom-lang-header']), // Example custom header
+    //     ],
+    //   }),
+    // }),
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -4,7 +4,7 @@ export enum UserRole {
 }
 
 export class User {
-  id: string; // UUID
+  id: string;
   username: string;
   email: string;
   password?: string; // Hashed, optional as we might not always fetch it

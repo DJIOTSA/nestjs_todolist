@@ -1,10 +1,17 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import * as path from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 // Import your TypeORM entities here later when they are created
 import { ConfigModule, ConfigService } from '@nestjs/config'; // We'll use ConfigModule for env vars
-// import { AcceptLanguageResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
+import {
+  AcceptLanguageResolver,
+  HeaderResolver,
+  I18nModule,
+  QueryResolver,
+} from 'nestjs-i18n';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -31,22 +38,21 @@ import { ConfigModule, ConfigService } from '@nestjs/config'; // We'll use Confi
         migrationsRun: true,
       }),
     }),
-    // I18nModule.forRootAsync({
-    //   imports: [ConfigModule],
-    //   inject: [ConfigService],
-    //   useFactory: (configService: ConfigService) => ({
-    //     fallbackLanguage: 'en',
-    //     loaderOptions: {
-    //       path: path.join(__dirname, '/infrastructure/i18n/'),
-    //       watch: configService.get('NODE_ENV') === 'development',
-    //     },
-    //     resolvers: [
-    //       { use: QueryResolver, options: ['lang', 'locale', 'l'] }, // ?lang=en
-    //       AcceptLanguageResolver,
-    //       // new HeaderResolver(['x-custom-lang-header']), // Example custom header
-    //     ],
-    //   }),
-    // }),
+    I18nModule.forRootAsync({
+      useFactory: (configService: ConfigService) => ({
+        fallbackLanguage: configService.getOrThrow('FALLBACK_LANGUAGE'),
+        loaderOptions: {
+          path: [path.join(__dirname, '/i18n/')],
+          watch: true,
+        },
+      }),
+      resolvers: [
+        { use: QueryResolver, options: ['lang'] },
+        AcceptLanguageResolver,
+        new HeaderResolver(['x-lang']),
+      ],
+      inject: [ConfigService],
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],

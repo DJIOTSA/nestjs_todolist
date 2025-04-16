@@ -1,0 +1,83 @@
+src/
+├── core/                      # Core Domain Logic (Framework Agnostic)
+│   ├── entities/              # Plain TS/JS Entities (User, Task, etc.) - KEEP THESE
+│   └── repositories/          # Abstract Repository Interfaces (UserRepository, etc.) - KEEP THESE
+│
+├── common/                    # Shared utilities, decorators, guards, pipes, interceptors
+│   ├── decorators/            # e.g., auth-user.decorator.ts
+│   ├── guards/                # e.g., jwt-auth.guard.ts
+│   ├── interceptors/          # e.g., ClassSerializerInterceptor setup (if global)
+│   └── pipes/                 # e.g., Global ValidationPipe setup (if global)
+│
+├── config/                    # Configuration setup
+│   └── typeorm.config.ts      # Factory function for TypeORM options
+│
+├── database/                  # Database Module & Migrations
+│   ├── database.module.ts     # Provides/Exports Repository Implementations
+│   └── migrations/            # TypeORM Migrations
+│
+├── i18n/                      # Internationalization files (e.g., en/translation.json)
+│   └── en/
+│   |   └── translation.json
+|   |__ fr/
+|       |__ translation.json
+│
+├── users/                     # Feature Module: Users
+│   ├── entities/              # --- ORM Entities specific to Users ---
+│   │   └── user.entity.ts     # (TypeORM Decorated, implements core/entities/user.entity)
+│   ├── repositories/          # --- Repository Implementations for Users ---
+│   │   └── typeorm-user.repository.ts # (Implements core/repositories/user.repository)
+│   ├── dto/                   # Data Transfer Objects for Users API
+│   │   ├── create-user.dto.ts
+│   │   └── user.response.dto.ts
+│   ├── users.controller.ts    # API Controller
+│   ├── users.service.ts       # Business Logic/Use Cases (Injects ABSTRACT UserRepository)
+│   └── users.module.ts        # Module Definition
+│
+├── auth/                      # Feature Module: Auth
+│   ├── dto/
+│   │   ├── login.dto.ts
+│   │   └── login.response.dto.ts
+│   ├── strategies/            # Passport Strategies (jwt.strategy.ts)
+│   ├── auth.controller.ts
+│   ├── auth.service.ts        # Handles login logic, JWT signing (Injects UsersService, JwtService)
+│   └── auth.module.ts
+│
+├── todo-lists/                # Feature Module: TodoLists
+│   ├── entities/
+│   │   └── todo-list.entity.ts # (TypeORM Decorated)
+│   ├── repositories/
+│   │   └── typeorm-todo-list.repository.ts # (Implements core/repositories/...)
+│   ├── dto/
+│   │   └── ...
+│   ├── todo-lists.controller.ts
+│   ├── todo-lists.service.ts  # (Injects ABSTRACT TodoListRepository)
+│   └── todo-lists.module.ts
+│
+├── tasks/                     # Feature Module: Tasks
+│   ├── entities/
+│   │   └── task.entity.ts     # (TypeORM Decorated)
+│   ├── repositories/
+│   │   └── typeorm-task.repository.ts # (Implements core/repositories/...)
+│   ├── dto/
+│   │   └── ...
+│   ├── tasks.controller.ts
+│   ├── tasks.service.ts       # (Injects ABSTRACT TaskRepository)
+│   └── tasks.module.ts
+│
+├── tags/                      # Feature Module: Tags (Placeholder)
+│   ├── entities/
+│   │   └── tag.entity.ts
+│   ├── repositories/
+│   │   └── typeorm-tag.repository.ts
+│   └── tags.module.ts # (Might just provide repo via DatabaseModule if no service/controller needed initially)
+│
+├── tokens/                    # Feature Module: Tokens (Placeholder)
+│   ├── entities/
+│   │   └── token.entity.ts
+│   ├── repositories/
+│   │   └── typeorm-token.repository.ts
+│   └── tokens.module.ts # (Might just provide repo via DatabaseModule)
+│
+├── app.module.ts              # Root Application Module
+└── main.ts                    # Application Entry Point

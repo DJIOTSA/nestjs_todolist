@@ -11,7 +11,13 @@ import {
   I18nModule,
   QueryResolver,
 } from 'nestjs-i18n';
-
+import { AuthModule } from './auth/auth.module';
+import { getTypeOrmConfig } from './config/typeorm.config';
+import { TagsModule } from './tags/tags.module';
+import { TasksModule } from './tasks/tasks.module';
+import { TodoListsModule } from './todo-lists/todo-lists.module';
+import { TokensModule } from './tokens/tokens.module';
+import { UsersModule } from './users/users.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -21,22 +27,7 @@ import {
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        host: configService.get<string>('DB_HOST'),
-        port: configService.get<number>('DB_PORT'),
-        username: configService.get<string>('DB_USERNAME'),
-        password: configService.get<string>('DB_PASSWORD'),
-        database: configService.get<string>('DB_DATABASE'),
-        entities: [__dirname + '/../**/*.orm-entity{.ts,.js}'], // Auto-detect ORM entities
-        synchronize: true,
-        autoLoadEntities: true,
-        logging: configService.get<string>('NODE_ENV') === 'development',
-        migrations: [
-          __dirname + '/infrastructure/database/migrations/*{.ts,.js}',
-        ],
-        migrationsRun: true,
-      }),
+      useFactory: getTypeOrmConfig,
     }),
     I18nModule.forRootAsync({
       useFactory: (configService: ConfigService) => ({
@@ -53,6 +44,12 @@ import {
       ],
       inject: [ConfigService],
     }),
+    UsersModule,
+    TodoListsModule,
+    TasksModule,
+    TagsModule,
+    TokensModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

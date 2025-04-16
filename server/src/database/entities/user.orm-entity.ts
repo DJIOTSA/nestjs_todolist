@@ -1,24 +1,24 @@
+import { Tag } from 'src/core/entities/tag.entity';
+import { Task } from 'src/core/entities/task.entity';
+import { TodoList } from 'src/core/entities/todo-list.entity';
+import { Token } from 'src/core/entities/token.entity';
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
-  OneToMany,
+  Entity,
   Index,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import {
   User as UserInterface,
   UserRole,
-} from '../../../core/entities/user.entity';
-import { TodoListOrmEntity } from './todo-list.orm-entity';
-import { TaskOrmEntity } from './task.orm-entity';
+} from '../../core/entities/user.entity';
 import { TagOrmEntity } from './tag.orm-entity';
+import { TaskOrmEntity } from './task.orm-entity';
+import { TodoListOrmEntity } from './todo-list.orm-entity';
 import { TokenOrmEntity } from './token.orm-entity';
-import { TodoList } from 'src/core/entities/todo-list.entity';
-import { Tag } from 'src/core/entities/tag.entity';
-import { Token } from 'src/core/entities/token.entity';
-import { Task } from 'src/core/entities/task.entity';
 
 @Entity('users')
 export class UserOrmEntity implements UserInterface {

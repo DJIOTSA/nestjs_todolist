@@ -1,4 +1,4 @@
-import { TodoList } from "../entities/todo-list.entity";
+import { TodoList } from '../entities/todo-list.entity';
 
 export abstract class TodoListRepository {
   abstract findById(id: string): Promise<TodoList | null>;
